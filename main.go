@@ -7,15 +7,18 @@ import (
 	"os/exec"
 	"strings"
 
+	c "github.com/fatih/color"
 	"github.com/fsnotify/fsnotify"
 )
+
+var p *c.Color = c.New(c.Bold, c.FgGreen)
 
 func cls() {
 	print("\033[H\033[2J")
 }
 
 func banner() {
-	print(
+	c.New(c.FgCyan).Println(
 		`
 ░██████╗░░█████╗░░░░░░░░██╗░░░░░░░██╗░█████╗░████████╗░█████╗░██╗░░██╗
 ██╔════╝░██╔══██╗░░░░░░░██║░░██╗░░██║██╔══██╗╚══██╔══╝██╔══██╗██║░░██║
@@ -27,17 +30,17 @@ func banner() {
 }
 
 func printWaiting() {
-	println("Watching for changes...")
+	p.Println("Watching for changes...")
 }
 
 func printSetup() {
-	println("Preparing and starting...")
+	c.New(c.FgHiMagenta, c.Bold).Println("Preparing and starting...")
 }
 
 func main() {
 	cls()
 	banner()
-	printWaiting()
+	printSetup()
 	path, err := os.Getwd()
 	if err != nil {
 		print(path)
@@ -52,6 +55,7 @@ func main() {
 	defer watcher.Close()
 
 	Run(path)
+	printWaiting()
 
 	done := make(chan bool)
 	go func() {
