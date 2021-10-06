@@ -65,9 +65,9 @@ func main() {
 				if !ok {
 					return
 				}
-				// log.Println("event:", event)
+				log.Println("event:", event)
 				if event.Op&fsnotify.Write == fsnotify.Write {
-					// log.Println("modified file:", event.Name)
+					log.Println("modified file:", event.Name)
 					separedByDot := strings.Split(event.Name, ".")
 					if separedByDot[len(separedByDot)-1] == "go" {
 						// Is a go file
